@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="PG-Video-LLaVA: Pixel Grounding in Large Multimodal Video Models">
+  <meta name="keywords" content="multimodal chatbot">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VideoGLaMM: A Large Multimodal Model for Pixel-Level
+    Visual Grounding in Videos</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="images/logos/logo-videoglamm.png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+  <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/3.27.0/gradio.js"></script>
+</head>
+
+
+<style>
+    .section {
+    margin-bottom: -30px; /* Adjust this value as needed to reduce the space */
+  }
+  .expandable-card .card-text-container {
+    max-height: 200px;
+    overflow-y: hidden;
+    position: relative;
+  }
+
+  .expandable-card.expanded .card-text-container {
+    max-height: none;
+  }
+
+  .expand-btn {
+    position: relative;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* margin-top: -20px; */
+    /* justify-content: center; */
+    color: #510c75;
+    border-color: transparent;
+  }
+
+  .expand-btn:hover {
+    background-color: rgba(200, 200, 200, 0.8);
+    text-decoration: none;
+    border-color: transparent;
+    color: #510c75;
+  }
+
+  .expand-btn:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  .expandable-card:not(.expanded) .card-text-container:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1));
+  }
+
+  .expandable-card:not(.expanded) .expand-btn {
+    margin-top: -40px;
+  }
+
+  .card-body {
+    padding-bottom: 5px;
+  }
+
+  .vertical-flex-layout {
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .figure-img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .adjustable-font-size {
+    font-size: calc(0.5rem + 2vw);
+  }
+
+  .chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    /* overflow-x: hidden; */
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+
+  #gradio pre {
+    background-color: transparent;
+  }
+</style>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <img src="images/logos/logo-videoglamm.png" alt="VideoGLaMM" width="100">
+            <h1 class="title is-1 publication-title">VideoGLaMM: A Large Multimodal Model for Pixel-Level Visual Grounding in Videos</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- First Group of 3 Authors -->
+              <div class="author-group">
+                  <span class="author-block">
+                      <a href="https://shehanmunasinghe.github.io/" style="color:#f68946;font-weight:normal;">Shehan Munasinghe,
+                  </span>
+                  <span class="author-block">
+                      <a href="https://hananshafi.github.io/" style="color:#008AD7;font-weight:normal;">Hanan Gani,
+                  </span>
+              </div>
+
+              <!-- Second Group of 2 Authors -->
+              <div class="author-group">
+                  <span class="author-block">
+                      <a href="#" style="color:#F2A900;font-weight:normal;">Wenqi Zhu</a>,
+                  </span>
+                  <span class="author-block">
+                      <a href="https://jialecao001.github.io/" style="color:#f68946;font-weight:normal;">Jiale Cao</a>,
+                  </span>
+              </div>
+
+              <!-- Third Group of 2 Authors -->
+              <div class="author-group">
+                <span class="author-block">
+                  <a href="https://www.cs.cmu.edu/~epxing/" style="color:#f68946;font-weight:normal;">Eric Xing,</a>
+              </span>
+                  <span class="author-block">
+                      <a href="https://sites.google.com/view/fahadkhans/home" style="color:#f68946;font-weight:normal;">Fahad S. Khan and</a>
+                  </span>
+                  <span class="author-block">
+                    <a href="https://salman-h-khan.github.io" style="color:#f68946;font-weight:normal;">Salman Khan</a>
+                </span>
+              </div>
+          </div>
+            <div class="is-size-5 publication-authors">
+              Mohamed bin Zayed University of Artificial Intelligence, Tianjin University,<br>
+            </div>
+            <div class="is-size-5 publication-authors">
+            Linköping University, Australian National University, Carnegie Mellon University<br>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="#" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/mbzuai-oryx/VideoGLaMM" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Teaser-->
+<section class="section custom-section-teaser">
+  <div class="columns is-centered has-text-centered">
+      <div class="column is-half" style="display: flex; align-items: flex-start; justify-content: center;">
+          <figure style="text-align: center;">
+            <!-- <figcaption> -->
+              <!-- <b>VideoGLaMM</b> is the first video-based Large Multimodal Model (LMM) with pixel-level grounding capabilities 🔥🔥🔥 -->
+          <!-- </figcaption>   -->
+            <img id="teaser" width="100%" src="images/figures/cvpr25-teaser.png">
+              
+          </figure>
+      </div>
+  </div>
+</section>
+<!--Teaser-->
+
+  <!-- Abstract -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h4 class="subtitle has-text-justified">
+          <b>VideoGLaMM</b> is a large video multimodal video model capable of pixel-level visual grounding. The model responds to natural language queries from the user and intertwines spatio-temporal
+          object masks in its generated textual responses to provide
+          a detailed understanding of video content. VideoGLaMM
+          seamlessly connects three key components: a Large Language Model (LLM); dual vision encoders; and a spatio-temporal pixel decoder. The dual vision encoders extract
+          spatial and temporal features separately, which are jointly
+          passed to the LLM to output responses rich in both spatial and temporal cues. This is facilitated by end-to-end training on our proposed benchmark Grounded conversation
+          Generation (GCG) dataset featuring 38k Video-QA triplets with 87k objects and 671k fine-grained masks. 
+        </h4>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section"  style="background-color:#efeff081">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths">
+        <h2 class="title is-3">🔥Highlights</h2>
+        <div class="content has-text-justified">
+            The key contributions of this work are: 
+
+          <ol type="1">
+            <li>We introduce <b>Video Grounded Large Multi-modalModel (VideoGLaMM)</b>, a video large multimodal
+              model, capable of pixel-level visual grounding,
+              featuring an end-to-end alignment mechanism.</li><br>
+              
+            <li>To achieve fine-grained spatio-temporal alignment, we in-
+              troduce a <b>benchmark grounded conversation generation (GCG) dataset</b> consisting
+              of 38k grounded video-QA triplet pairs and 83k objects
+              and roughly 671k fine-grained spatio-temporal masks.</li><br>
+            <li>We assess the performance of VideoGLaMM across
+              <b>diverse tasks</b> spanning grounded conversation generation, visual grounding, and referring video segmentation,
+              where it achieves state-of-the-art performance </li><br>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!--Model Arch-->
+<section class="section">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-six-fifths">
+      <h2 class="title is-3"><img src="images/logos/logo-videoglamm.png" alt="VideoGLaMM_face" width="40" style="vertical-align: bottom;"> VideoGLaMM : Architecture</h2>
+    </div>
+  </div>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <p>
+            <b>VideoGLaMM</b> consists of
+            following key components: (i) Spatio-Temporal Dual Encoder,
+            (ii) Dual Alignment V-L Adapters for image and video fea-
+            tures, (iii) Large Language Model (LLM) iv) L-V Adapter and (iv) Promptable
+            Pixel Decoder.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths" style="display: flex; align-items: flex-start; justify-content: center;">
+        <figure style="text-align: center;">
+          <img id="teaser" width="100%" src="images/figures/cvpr25_main_block_diagram-jpg.jpg">
+          <figcaption>VideoGLaMM consists of a dual spatio-temporal encoder for encoding image and video level
+            features. The spatial features represent the local information and the temporal features represent global information. The spatial and
+            temporal tokens are passed through V-L adapters and concatenated with the text tokens, before feeding to LLM. An L-V projector is
+            employed to align LLM’s response with the visual space of pixel decoder. Finally, the aligned LLM features along with the frame features
+           obtained from a frame encoder are jointly passed to a grounded pixel decoder, to obtain the fine-grained object masks corresponding to the LLM response.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Model Arch -->
+
+<!--Model Arch-->
+<section class="section">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-six-fifths">
+      <h2 class="title is-3"><img src="images/logos/logo-videoglamm.png" alt="VideoGLaMM_face" width="40" style="vertical-align: bottom;"> VideoGLaMM : Benchmark and Annotation Pipeline</h2>
+    </div>
+  </div>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <p></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths" style="display: flex; align-items: flex-start; justify-content: center;">
+        <figure style="text-align: center;">
+          <img id="teaser" width="100%" src="images/figures/videoglamm_annotation_pipeline.png">
+          <figcaption><b>Proposed Semi-automatic Annotation Pipeline</b>. Our dataset for grounded conversation generation (GCG) is built from three
+            video dataset types: i) Videos having masks only: Object patches are extracted from video frames using masks and processed by the
+            Gemini model for initial object descriptions, which are then refined to produce detailed object captions. These refined captions and masks
+            are used again with the Gemini model to create dense grounded captions. ii) Videos having bbox annotations and captions: Frames are
+            first processed with a Video-LMM to generate a comprehensive caption which is combined with the original caption and fed to GPT-4o
+            to obtain dense grounded captions. Masks are generated using frames and ground-truth bounding boxes with the SAM model. iii) Videos
+            having object bboxes and referring expressions: Frames, bounding boxes, and referring expressions are input to GPT-4o for dense grounded
+            captions, while masks are generated by feeding frames and bounding boxes to the SAM model.          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!--Qualitative Results (gcg)-->
+<section class="section">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-six-fifths">
+      <h2 class="title is-3"><img src="images/logos/logo-videoglamm.png" alt="VideoGLaMM_face" width="40" style="vertical-align: bottom;"> Grounded Conversation Generation (GCG)</h2>
+    </div>
+  </div>
+
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <p> Given user queries, the <b>VideoGLaMM</b> generates textual responses and grounds objects and phrases using pixel-level masks, showing its detailed understanding of the video.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-six-fifths" style="display: flex; align-items: flex-start; justify-content: center;">
+        <figure style="text-align: center;">
+          <img id="teaser" width="100%" src="images/figures/cvpr25_qualitative.png">
+          <figcaption>      </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<style>
+  #BibTeX {
+    margin-bottom: -80px; /* Adjust the negative margin as needed */
+  }
+  #Acknowledgement {
+    margin-top: -80px; /* Adjust the negative margin as needed */
+  }
+</style>
+
+<!-- BibTex -->
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>
+@article{munasinghe2024videoglamm,
+  title={VideoGLaMM: A Large Multimodal Model for Pixel-Level Visual Grounding in Videos}, 
+  author={Shehan Munasinghe and Hanan Gani and Muhammad Maaz and Wenqi Zhu and Jiale Cao and Eric Xing and Fahad Khan and Salman Khan},
+  journal={ArXiv }, #TODO
+  year={2024}
+}
+  </code></pre>
+    </div>
+  </section> -->
+ 
+  <!-- Acknowledgement -->
+  <section class="section" id="Acknowledgement">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Acknowledgement</h2>
+      <p>
+        This website is adapted from <a
+        href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>, licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+        Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+    </div>
+  </section>
+
+</body>
+
+</html>
+
+<div style="text-align: center;">
+  <a href="https://www.ival-mbzuai.com" target="_blank">
+    <img src="images/logos/IVAL_logo.png" width="200" height="100" alt="IVAL Logo">
+  </a>
+  <a href="https://github.com/mbzuai-oryx" target="_blank">
+    <img src="images/logos/Oryx_logo.png" width="100" height="100" alt="Oryx Logo">
+  </a>
+  <a href="https://mbzuai.ac.ae" target="_blank">
+    <img src="images/logos/MBZUAI_logo.png" width="360" height="85" alt="MBZUAI Logo">
+  </a>
+</div>
