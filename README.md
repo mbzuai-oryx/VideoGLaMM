@@ -7,7 +7,7 @@
 Linköping University, Australian National University, Carnegie Mellon University**
 
 [![Website](https://img.shields.io/badge/Project-Website-87CEEB)](https://mbzuai-oryx.github.io/VideoGLaMM/)
-[![paper](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](#)
+[![paper](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2411.04923)
 
 ---
 
@@ -23,16 +23,42 @@ Linköping University, Australian National University, Carnegie Mellon Universit
 
 VideoGLaMM is a large video multimodal video model capable of pixel-level visual grounding. The model responds to natural language queries from the user and intertwines spatio-temporal object masks in its generated textual responses to provide a detailed understanding of video content. VideoGLaMM seamlessly connects three key components: a Large Language Model (LLM); dual vision encoders; and a spatio-temporal pixel decoder. The dual vision encoders extract spatial and temporal features separately, which are jointly passed to the LLM to output responses rich in both spatial and temporal cues. This is facilitated by end-to-end training on our proposed benchmark Grounded conversation Generation (GCG) dataset featuring 38k Video-QA triplets with 87k objects and 671k fine-grained masks.
 
+---
+## 🏆 Highlights
+1. We introduce Video Grounded Large Multi-modalModel (VideoGLaMM), a video large multimodal model, capable of pixel-level visual grounding, featuring an end-to-end alignment mechanism.
+
+2. To achieve fine-grained spatio-temporal alignment, we in- troduce a benchmark grounded conversation generation (GCG) dataset consisting of 38k grounded video-QA triplet pairs and 83k objects and roughly 671k fine-grained spatio-temporal masks.
+
+3. We assess the performance of VideoGLaMM across diverse tasks spanning grounded conversation generation, visual grounding, and referring video segmentation, where it achieves state-of-the-art performance
 
 ---
+<!-- Architecture -->
 ## <img src="docs/images/logos/logo-videoglamm.png" height="25">  Architecture
 
 <p align="center">
   <img src="docs/images/figures/cvpr25_main_block_diagram-jpg.jpg" alt="VideoGLaMM Architecture">
 </p>
 
+VideoGLaMM consists of following key components: (i) Spatio-Temporal Dual Encoder, (ii) Dual Alignment V-L Adapters for image and video fea- tures, (iii) Large Language Model (LLM) iv) L-V Adapter and (iv) Promptable Pixel Decoder.
+
+---
+## <img src="docs/images/logos/logo-videoglamm.png" height="25">  Benchmark and Annotation Pipeline
+
+<p align="center">
+  <img src="docs/images/figures/videoglamm_annotation_pipeline.png" alt="Annotation Pipeline">
+</p>
+
+We propose a semi-automatic annotation pipeline for creating a grounded conversation generation (GCG) dataset for videos.
 
 
+---
+## Examples 🔍
+
+Given user queries, the VideoGLaMM generates textual responses and grounds objects and phrases using pixel-level masks, showing its detailed understanding of the video.
+
+<p align="center">
+  <img src="docs/images/figures/cvpr25_qualitative.png" alt="VideoGLaMM Architecture">
+</p>
 
 ---
 
@@ -43,7 +69,8 @@ VideoGLaMM is a large video multimodal video model capable of pixel-level visual
   title={VideoGLaMM: A Large Multimodal Model for Pixel-Level Visual Grounding in Videos}, 
   author={Shehan Munasinghe and Hanan Gani and Wenqi Zhu and Jiale Cao and Eric Xing and Fahad Khan and Salman Khan},
   journal={ArXiv},
-  year={2024}
+  year={2024},
+  url={https://arxiv.org/abs/2411.04923}
 }
 ```
 
