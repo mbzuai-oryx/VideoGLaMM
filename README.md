@@ -25,9 +25,9 @@ VideoGLaMM is a large video multimodal video model capable of pixel-level visual
 
 ---
 ## 🏆 Highlights
-1. We introduce Video Grounded Large Multi-modalModel (VideoGLaMM), a video large multimodal model, capable of pixel-level visual grounding, featuring an end-to-end alignment mechanism.
+1. We introduce Video Grounded Large Multi-modal Model (VideoGLaMM), a video large multimodal model, capable of pixel-level visual grounding, featuring an end-to-end alignment mechanism.
 
-2. To achieve fine-grained spatio-temporal alignment, we in- troduce a benchmark grounded conversation generation (GCG) dataset consisting of 38k grounded video-QA triplet pairs and 83k objects and roughly 671k fine-grained spatio-temporal masks.
+2. To achieve fine-grained spatio-temporal alignment, we introduce a benchmark grounded conversation generation (GCG) dataset consisting of 38k grounded video-QA triplet pairs and 83k objects and roughly 671k fine-grained spatio-temporal masks.
 
 3. We assess the performance of VideoGLaMM across diverse tasks spanning grounded conversation generation, visual grounding, and referring video segmentation, where it achieves state-of-the-art performance
 
@@ -39,7 +39,7 @@ VideoGLaMM is a large video multimodal video model capable of pixel-level visual
   <img src="docs/images/figures/cvpr25_main_block_diagram-jpg.jpg" alt="VideoGLaMM Architecture">
 </p>
 
-VideoGLaMM consists of following key components: (i) Spatio-Temporal Dual Encoder, (ii) Dual Alignment V-L Adapters for image and video fea- tures, (iii) Large Language Model (LLM) iv) L-V Adapter and (iv) Promptable Pixel Decoder.
+VideoGLaMM consists of following key components: (i) Spatio-Temporal Dual Encoder, (ii) Dual Alignment V-L Adapters for image and video features, (iii) Large Language Model (LLM) iv) L-V Adapter and (iv) Promptable Pixel Decoder.
 
 ---
 ## <img src="docs/images/logos/logo-videoglamm.png" height="25">  Benchmark and Annotation Pipeline
