@@ -1,4 +1,4 @@
-# <img src="docs/images/logos/logo-videoglamm.png" height="40">  VideoGLaMM
+# <img src="docs/images/logos/logo-videoglamm.png" height="40">  VideoGLaMM: A Large Multimodal Model for Pixel-Level Visual Grounding in Videos [CVPR 2025🔥]
 ![](https://i.imgur.com/waxVImv.png)
 
 [Shehan Munasinghe](https://github.com/shehanmunasinghe) , [Hanan Gani](https://github.com/hananshafi) , [Wenqi Zhu](#) , [Jiale Cao](https://jialecao001.github.io/), [Eric Xing](https://www.cs.cmu.edu/~epxing/), [Fahad Shahbaz Khan](https://scholar.google.es/citations?user=zvaeYnUAAAAJ&hl=en). [Salman Khan](https://salman-h-khan.github.io/),
@@ -12,7 +12,9 @@ Linköping University, Australian National University, Carnegie Mellon Universit
 ---
 
 ## 📢 Latest Updates
-- 📦 Code, checkpoints will be released soon. Stay tuned!
+
+- **Feb-2025:** Video-GLaMM is accepted at CVPR 2025! 🎊🎊
+
 ---
 
 ## <img src="docs/images/logos/logo-videoglamm.png" height="25">  Overview
@@ -61,6 +63,29 @@ Given user queries, the VideoGLaMM generates textual responses and grounds objec
 </p>
 
 ---
+
+## Running VideoGLaMM 🔧
+
+### Environment setup
+
+    conda create --name=videoglamm python=3.11
+
+    conda activate videoglamm
+
+    pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu121
+    pip install transformers==4.41.0
+    DS_BUILD_FUSED_ADAM=1 pip install deepspeed==0.14.0
+
+    pip install -r VideoGLaMM/requirements_sam2_cluster.txt 
+
+    cd VideoGLaMM/model/segment_anything_2
+    python setup.py build_ext --inplace
+    cd ../../..
+
+### Training and Evaluation
+
+Please refer [here](RUN_VideoGLaMM.md) for instructions
+
 
 ## Citation 📜
 
