@@ -101,6 +101,6 @@ Please refer [here](RUN_VideoGLaMM.md) for instructions
 
 ---
 
-[<img src="docs/images/logos/IVAL_logo.png" width="200" height="100">](https://www.ival-mbzuai.com)
+[<img src="docs/images/logos/IVAL_logo.png" width="200" height="100">](https://www.ival-mbzuai.net)
 [<img src="docs/images/logos/Oryx_logo.png" width="100" height="100">](https://github.com/mbzuai-oryx)
 [<img src="docs/images/logos/MBZUAI_logo.png" width="360" height="85">](https://mbzuai.ac.ae)
